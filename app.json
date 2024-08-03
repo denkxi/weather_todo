@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "weather_todo",
+    "name": "Weather ToDo",
     "slug": "weather_todo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "myapp",
+    "scheme": "weather_todo",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
