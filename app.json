@@ -1,11 +1,11 @@
 {
   "expo": {
-    "name": "Weather ToDo",
-    "slug": "weather_todo",
+    "name": "TaskCloud",
+    "slug": "taskcloud",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
-    "scheme": "weather_todo",
+    "scheme": "taskcloud",
     "userInterfaceStyle": "automatic",
     "splash": {
       "image": "./assets/images/splash.png",
