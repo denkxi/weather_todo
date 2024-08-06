@@ -28,16 +28,19 @@ const SignUp = () => {
           <FormField
             title="Username"
             value={form.username}
+            placeholder="JohnDoe"
             handleChangeText={(e: any) => setform({ ...form, username: e })}
           />
           <FormField
             title="Email"
             value={form.email}
+            placeholder="john.doe@mail.com"
             handleChangeText={(e: any) => setform({ ...form, email: e })}
           />
           <FormField
             title="Password"
             value={form.password}
+            placeholder="**********"
             handleChangeText={(e: any) => setform({ ...form, password: e })}
           />
 

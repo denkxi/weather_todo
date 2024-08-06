@@ -13,7 +13,7 @@ interface TabIconProps {
 
 const TabIcon: React.FC<TabIconProps> = ({ icon, color, name, focused }) => {
   return (
-    <View className="items-center justify-center">
+    <View className="items-center justify-center mt-4">
       <Image
         source={icon}
         resizeMode="contain"
@@ -38,10 +38,10 @@ const TabsLayout = () => {
           tabBarActiveTintColor: "#9df2dd",
           tabBarInactiveTintColor: "#CDCDE0",
           tabBarStyle: {
-            backgroundColor: "#2c2d31",
+            backgroundColor: "#2b2d31",
             borderTopWidth: 1,
-            borderTopColor: "#232533",
-            height: 84,
+            borderTopColor: "#2b2d31",
+            height: 80,
           }
         }}
       >
