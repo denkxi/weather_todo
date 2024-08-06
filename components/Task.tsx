@@ -45,7 +45,7 @@ const Task: React.FC<TaskProps> = ({
       )}
       <View className="flex-1 mx-2 flex-col justify-center items-center">
         <Text className="text-main text-xl font-qmedium">{name}</Text>
-        <Text className="text-main text-lg font-qregular">{dayjs(datetime).format("YYYY-MM-DD")}</Text>
+        <Text className="text-main text-lg font-qregular">{dayjs(datetime).format("DD-MM-YYYY")}</Text>
       </View>
       <TouchableOpacity onPress={() => removeTask(id)}>
         <Image

@@ -1,4 +1,4 @@
-import { ScrollView, View, Text } from "react-native";
+import { ScrollView, View, Text, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
 import { Link } from "expo-router";
@@ -15,7 +15,9 @@ const SignUp = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {};
+  const submit = () => {
+    Alert.alert("Sign up functionality not implemented!")
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">

@@ -15,7 +15,7 @@ import Task from "@/components/Task";
 import tasks from "../../constants/tasks";
 
 const Tasks = () => {
-  const [hideCompleted, setHideCompleted] = useState(false);
+  const [hideCompleted, setHideCompleted] = useState(true);
   const [taskList, setTaskList] = useState([...tasks]);
 
   const filteredTasks = hideCompleted
@@ -66,8 +66,6 @@ const Tasks = () => {
     );
   };
 
-  const currentDate = dayjs().format("YYYY-MM-DD");
-
   return (
     <SafeAreaView className="bg-primary h-full">
       <View className="mt-8 flex-row justify-between mx-2 mb-4 pb-2 border-b-2 border-b-field">
@@ -79,7 +77,7 @@ const Tasks = () => {
             Current Date:
           </Text>
           <Text className="text-main text-xl font-qsemibold ">
-            {currentDate}
+            {dayjs().format("DD-MM-YYYY")}
           </Text>
         </View>
       </View>
