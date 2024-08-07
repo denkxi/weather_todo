@@ -1,8 +1,11 @@
 import { ScrollView, View, Text, Alert } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useState } from "react";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
+import axios from "axios";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
+import { BACKEND_URL } from '../../config';
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 
@@ -14,9 +17,27 @@ const SignIn = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const submit = () => {
+  const submit = async () => {
     if (form.email === "" || form.password === "") {
       Alert.alert("Error", "Please fill in all fields");
+      return;
+    }
+
+    setIsSubmitting(true);
+
+    try {
+      const response = await axios.post(`${BACKEND_URL}/login`, form);
+      const { token } = response.data;
+
+      await AsyncStorage.setItem("token", token);
+
+      Alert.alert("Success", "Logged in successfully");
+
+      router.push("/tasks");
+    } catch (error) {
+      Alert.alert("Error", "Invalid email or password");
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -49,9 +70,21 @@ const SignIn = () => {
           />
 
           <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-main font-qregular">Don't have an account?</Text>
-            <Link href="/sign-up" className="text-xl font-qsemibold text-secondary">Sign Up</Link>
-            <Link href="/tasks" className="text-xl font-qsemibold text-secondary">Skip</Link>
+            <Text className="text-lg text-main font-qregular">
+              Don't have an account?
+            </Text>
+            <Link
+              href="/sign-up"
+              className="text-xl font-qsemibold text-secondary"
+            >
+              Sign Up
+            </Link>
+            <Link
+              href="/tasks"
+              className="text-xl font-qsemibold text-secondary"
+            >
+              Skip
+            </Link>
           </View>
         </View>
       </ScrollView>

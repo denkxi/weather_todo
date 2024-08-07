@@ -3,10 +3,9 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const bodyParser = require("body-parser");
 const cors = require("cors");
-const dotenv = require("dotenv");
-const todoTasks = require("./tasks");
 
-dotenv.config();
+const { SECRET_KEY } = require('../config');
+const todoTasks = require("./tasks");
 
 const app = express();
 const PORT = 3000;
@@ -34,8 +33,6 @@ const createDefaultUsers = async () => {
 };
 createDefaultUsers();
 
-// JWT secret key
-const SECRET_KEY = process.env.SECRET_KEY;
 
 // Register
 app.post("/register", async (req, res) => {
