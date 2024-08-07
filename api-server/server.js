@@ -20,11 +20,13 @@ const tasks = [...todoTasks];
 // Create default admin and user
 const createDefaultUsers = async () => {
   const defaultAdmin = {
+    username: "adminDefault",
     email: "admin@mail.com",
     password: await bcrypt.hash("admin123", 10),
     role: "admin",
   };
   const defaultUser = {
+    username: "userDefault",
     email: "user@mail.com",
     password: await bcrypt.hash("user123", 10),
     role: "user",
@@ -36,7 +38,7 @@ createDefaultUsers();
 
 // Register
 app.post("/register", async (req, res) => {
-  const { email, password, role } = req.body;
+  const { username, email, password, role } = req.body;
 
   // Check if user already exists
   const userExists = users.find((user) => user.email === email);
@@ -48,7 +50,7 @@ app.post("/register", async (req, res) => {
   const hashedPassword = await bcrypt.hash(password, 10);
 
   // Save user with role
-  users.push({ email, password: hashedPassword, role });
+  users.push({ username, email, password: hashedPassword, role });
 
   res.status(201).json({ message: "User registered successfully" });
 });
@@ -70,7 +72,7 @@ app.post("/login", async (req, res) => {
   }
 
   // Create JWT
-  const token = jwt.sign({ email: user.email, role: user.role }, SECRET_KEY, {
+  const token = jwt.sign({ email: user.email, role: user.role, username: user.username }, SECRET_KEY, {
     expiresIn: "1h",
   });
 
@@ -88,6 +90,16 @@ const authenticateToken = (req, res, next) => {
     next();
   });
 };
+
+// Get user profile
+app.get('/profile', authenticateToken, (req, res) => {
+  const user = users.find(user => user.email === req.user.email);
+  if (!user) {
+    return res.status(404).json({ message: 'User not found' });
+  }
+  const { username, email, role } = user;
+  res.json({ username, email, role });
+});
 
 // Authorize role
 const authorizeRole = (role) => (req, res, next) => {

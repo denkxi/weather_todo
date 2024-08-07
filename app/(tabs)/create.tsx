@@ -1,9 +1,18 @@
 import { View, Text, SafeAreaView, ScrollView } from "react-native";
 import React, { useState } from "react";
+
+import { useUserContext } from "@/hooks/UserContext";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 
 const Create = () => {
+  const { user } = useUserContext();
+
+  if (!user) {
+    console.log("User is null, returning early");
+    return null;
+  }
+
   const [form, setform] = useState({
     name: "",
     description: "",
@@ -20,7 +29,6 @@ const Create = () => {
             Create Task
           </Text>
 
-
           <FormField
             title="Name"
             value={form.name}
@@ -34,12 +42,18 @@ const Create = () => {
             handleChangeText={(e: any) => setform({ ...form, description: e })}
           />
 
-          <CustomButton
-            title="Create"
-            handlePress={handleCreate}
-            containerStyles="mt-6 bg-[#b0c5a4] min-w-[150px]"
-            isLoading={isSubmitting}
-          />
+          {user.role === "admin" ? (
+            <CustomButton
+              title="Create"
+              handlePress={handleCreate}
+              containerStyles="mt-6 bg-[#b0c5a4] min-w-[150px]"
+              isLoading={isSubmitting}
+            />
+          ) : (
+            <Text className="text-center text-[#d37676] font-qsemibold text-xl">
+              Only users with admin role can create tasks!
+            </Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>

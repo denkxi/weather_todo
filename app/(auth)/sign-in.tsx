@@ -5,7 +5,8 @@ import { Link, router } from "expo-router";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import { BACKEND_URL } from '../../config';
+import { useUserContext } from "@/hooks/UserContext";
+import { BACKEND_URL } from '@/config.js';
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 
@@ -16,6 +17,7 @@ const SignIn = () => {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const { refreshUser } = useUserContext();
 
   const submit = async () => {
     if (form.email === "" || form.password === "") {
@@ -30,7 +32,8 @@ const SignIn = () => {
       const { token } = response.data;
 
       await AsyncStorage.setItem("token", token);
-
+      refreshUser();
+      
       Alert.alert("Success", "Logged in successfully");
 
       router.push("/tasks");
@@ -78,12 +81,6 @@ const SignIn = () => {
               className="text-xl font-qsemibold text-secondary"
             >
               Sign Up
-            </Link>
-            <Link
-              href="/tasks"
-              className="text-xl font-qsemibold text-secondary"
-            >
-              Skip
             </Link>
           </View>
         </View>

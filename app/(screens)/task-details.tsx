@@ -13,8 +13,16 @@ import dayjs from "dayjs";
 import { icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
+import { useUserContext } from "@/hooks/UserContext";
 
 const TaskDetails = () => {
+  const { user } = useUserContext();
+
+  if (!user) {
+    console.log("User is null, returning early");
+    return null;
+  }
+
   const { task } = useLocalSearchParams();
 
   // Parse json back into object
@@ -76,8 +84,10 @@ const TaskDetails = () => {
             handleChangeText={(e: any) => setForm({ ...form, description: e })}
           />
 
-          <View className="flex-row justify-between items-center mt-4">
-            <Text className="text-xl text-main font-qmedium">Completion status:</Text>
+          <View className="flex-row justify-between items-center">
+            <Text className="text-xl text-main font-qmedium">
+              Completion status:
+            </Text>
             {form.isComplete ? (
               <TouchableOpacity
                 onPress={(e: any) => setForm({ ...form, isComplete: false })}
@@ -103,20 +113,26 @@ const TaskDetails = () => {
             )}
           </View>
 
-          <View className="flex-row justify-evenly gap-2">
-            <CustomButton
-              title="Delete"
-              handlePress={handleDelete}
-              containerStyles="mt-6 bg-[#d37676] min-w-[150px]"
-              isLoading={isSubmitting}
-            />
-            <CustomButton
-              title="Save"
-              handlePress={handleSave}
-              containerStyles="mt-6 bg-[#b0c5a4] min-w-[150px]"
-              isLoading={isSubmitting}
-            />
-          </View>
+          {user.role === "admin" ? (
+            <View className="flex-row justify-evenly gap-2">
+              <CustomButton
+                title="Delete"
+                handlePress={handleDelete}
+                containerStyles="mt-6 bg-[#d37676] min-w-[150px]"
+                isLoading={isSubmitting}
+              />
+              <CustomButton
+                title="Save"
+                handlePress={handleSave}
+                containerStyles="mt-6 bg-[#b0c5a4] min-w-[150px]"
+                isLoading={isSubmitting}
+              />
+            </View>
+          ) : (
+            <Text className="text-center mt-6 text-[#d37676] font-qsemibold text-xl">
+              Only users with admin role can edit tasks!
+            </Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
