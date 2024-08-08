@@ -24,7 +24,7 @@ export const getTasks = async () => {
   return response.data;
 };
 
-export const createTask = async (task: any) => {
+export const createTask = async (task: Task) => {
   const response = await axiosInstance.post('/tasks', task);
   return response.data;
 };

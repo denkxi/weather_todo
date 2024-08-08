@@ -126,7 +126,7 @@ app.get("/tasks/:id", authenticateToken, authorizeRole("admin"), (req, res) => {
     return res.status(404).json({ message: "Task not found" });
   }
 
-  
+
 })
 
 const generateTaskId = () => {
@@ -164,9 +164,6 @@ app.post("/tasks", authenticateToken, validateTask, authorizeRole("admin"), (req
   const task = {
     id: generateTaskId(),
     ...req.body,
-    datetime: new Date().toDateString(),
-    location: "Tallinn",
-    isComplete: false,
     createdBy: req.user.email,
   };
   tasks.push(task);

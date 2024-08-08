@@ -115,7 +115,7 @@ const Tasks = () => {
 
   if (loading) {
     return (
-      <SafeAreaView>
+      <SafeAreaView className="bg-primary h-full">
         <Text className="text-secondary-100 text-4xl font-qsemibold text-center">
           Loading...
         </Text>

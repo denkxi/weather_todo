@@ -1,9 +1,13 @@
-import { View, Text, SafeAreaView, ScrollView } from "react-native";
+import { View, Text, SafeAreaView, ScrollView, Alert } from "react-native";
 import React, { useState } from "react";
+import { router } from "expo-router";
 
 import { useUserContext } from "@/hooks/UserContext";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
+import { createTask } from "@/services/taskService";
+import { Task } from "@/model/Task";
+
 
 const Create = () => {
   const { user } = useUserContext();
@@ -19,7 +23,37 @@ const Create = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleCreate = () => {};
+  const handleCreate = async () => {
+    if (!form.name || !form.description) {
+      Alert.alert("Error", "Please fill in all fields");
+      return;
+    } else if (form.name.length > 30) {
+      Alert.alert("Error", "Task name should not be longer than 30 characters");
+      return;
+    } else if (form.description.length > 150) {
+      Alert.alert("Error", "Task description should not be longer than 150 characters");
+      return;
+    }
+  
+    try {
+      setIsSubmitting(true);
+      const newTask: Task = {
+        ...form,
+        datetime: new Date().toISOString(),
+        location: "Tallinn",
+        isComplete: false,
+      };
+      await createTask(newTask);
+      Alert.alert("Success", "Task created successfully", [
+        { text: "OK", onPress: () => router.push('/tasks') },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "Failed to create task");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+  
 
   return (
     <SafeAreaView className="bg-primary h-full">

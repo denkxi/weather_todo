@@ -37,6 +37,7 @@ const TaskDetails = () => {
     description: taskObj.description,
     isComplete: taskObj.isComplete,
     datetime: taskObj.datetime,
+    location: taskObj.location,
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);

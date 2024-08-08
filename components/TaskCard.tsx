@@ -22,10 +22,20 @@ const TaskCard: React.FC<TaskProps> = ({ task, markTask, pressDelete }) => {
 
   const { id, name, isComplete, datetime } = task;
 
+  if (!id) {
+    return <Text>No task found</Text>;
+  }
+
   return (
     <View className="bg-field mx-4 my-2 p-4 rounded-2xl flex-row justify-between items-center">
-      {isComplete && user.role === "admin" ? (
-        <TouchableOpacity onPress={() => markTask(id)}>
+      {isComplete ? (
+        <TouchableOpacity onPress={() => {
+          if (user.role === "admin") {
+            markTask(id);
+          } else {
+            return;
+          }
+        }}>
           <Image
             className="w-8 h-8"
             resizeMode="contain"
@@ -33,8 +43,14 @@ const TaskCard: React.FC<TaskProps> = ({ task, markTask, pressDelete }) => {
             tintColor="#b0c5a4"
           />
         </TouchableOpacity>
-      ) : user.role === "admin" ? (
-        <TouchableOpacity onPress={() => markTask(id)}>
+      ) : (
+        <TouchableOpacity onPress={() => {
+          if (user.role === "admin") {
+            markTask(id);
+          } else {
+            return;
+          }
+        }}>
           <Image
             className="w-8 h-8"
             resizeMode="contain"
@@ -42,8 +58,6 @@ const TaskCard: React.FC<TaskProps> = ({ task, markTask, pressDelete }) => {
             tintColor="#f0f1f3"
           />
         </TouchableOpacity>
-      ) : (
-        ""
       )}
       <View className="flex-1 mx-2 flex-col justify-center items-center">
         <Text className="text-main text-xl font-qmedium">{name}</Text>
