@@ -1,50 +1,149 @@
-# Welcome to your Expo app 👋
+# TaskCloud
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+## Description
 
-## Get started
+TaskCloud is a mobile application built with React Native and Expo. It is a ToDo application that integrates with a weather API to provide weather information for the location of each task. The application supports user authentication with roles, where only users with the admin role can create, edit, or delete tasks.
 
-1. Install dependencies
+## Technologies used
+- React Native
+- Node.js
+- Express.js for local database
+- Axios
+- NativeWind
+- Day.js
+- AsyncStorage
+- Expo
 
-   ```bash
-   npm install
-   ```
+## Features
 
-2. Start the app
+- User Authentication (Login, Logout)
+- Role-Based Access Control (Admin and User roles)
+- Create, Edit, Delete tasks (Admin only)
+- View task list (tap task to edit and see details)
+- Weather integration for task locations
+- Temperature unit toggle (Celsius and Fahrenheit)
+- Caching of weather data to reduce API requests
 
-   ```bash
-    npx expo start
-   ```
+## Installation
 
-In the output, you'll find options to open the app in a
-
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
+Clone the repository:
 
 ```bash
-npm run reset-project
+git clone https://github.com/yourusername/taskcloud.git
+cd taskcloud
 ```
 
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+Install dependencies for the mobile app:
 
-## Learn more
+```bash
+npm install
+```
 
-To learn more about developing your project with Expo, look at the following resources:
+Install dependencies for the server:
 
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+```bash
+cd api-server
+npm install
+```
 
-## Join the community
+## Configuration
 
-Join our community of developers creating universal apps.
+### Configuration File
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+Create a `config.js` file in the root directory and add the following:
+
+```bash
+module.exports = {
+  BACKEND_URL: "http://<your-iPv4-address>:3000", // Update with your address
+  SECRET_KEY: "b51527662ffa7e453eb2d54a9fafc5fc44295441676a730b956d4f66d57ad0b8", // You can keep this key or replace with your own secure secret key for JWT authentication
+  WEATHER_API_KEY: "your_openweathermap_api_key", // Replace with your OpenWeatherMap API key
+};
+```
+### Mobile App
+
+- The mobile app uses Expo Go for development. Ensure your mobile device and computer are on the same network.
+- Install the Expo Go app on your mobile device.
+
+## Usage
+
+### Running the server
+
+Start the server:
+
+```bash
+cd api-server
+node server.js
+```
+
+### Running the mobile app
+
+Start the mobile app:
+
+```bash
+npx expo start
+```
+
+Follow the instructions to run the app on an emulator or a physical device using the Expo Go app.
+
+## Default users
+
+Use the following credentials to log in:
+
+### Admin user:
+- Email: `admin@mail.com`
+- Password: `admin123`
+
+### Regular user:
+- Email: `user@mail.com`
+- Password: `user123`
+
+
+## API Documentation
+
+### Endpoints
+
+- `POST /login` - Login a user and obtain a JWT token
+- `GET /profile` - Get the authenticated user's profile
+- `GET /tasks` - Get all tasks (authentication required)
+- `POST /tasks` - Create a new task (admin only)
+- `PUT /tasks/:id` - Update a task (admin only)
+- `DELETE /tasks/:id` - Delete a task (admin only)
+
+## Previews
+
+### Onboarding screen
+<img src="./previews/onboarding.jpg" alt="Onboarding" width="200"/>
+
+### Sign in screen
+<img src="./previews/signin.jpg" alt="Sign in" width="200"/>
+
+### Task list (admin)
+<img src="./previews/task_list_admin.jpg" alt="Tasks admin" width="200"/>
+
+### Task details (admin, celcius)
+<img src="./previews/details_admin_celcius.jpg" alt="Details admin celcius" width="200"/>
+
+### Task details (admin, fahrenheit)
+<img src="./previews/details_admin_fahrenheit.jpg" alt="Details admin fahrenheit" width="200"/>
+
+### Create task (admin)
+<img src="./previews/create_admin.jpg" alt="Create admin" width="200"/>
+
+### Profile
+<img src="./previews/profile.jpg" alt="Profile" width="200"/>
+
+### Task list (user)
+<img src="./previews/task_list_user.jpg" alt="Tasks user" width="200"/>
+
+### Task list (user, hide completed)
+<img src="./previews/task_list_user_hidden.jpg" alt="Tasks user hidden" width="200"/>
+
+### Task details (user)
+<img src="./previews/details_user.jpg" alt="Details user" width="200"/>
+
+### Create task (user)
+<img src="./previews/create_user.jpg" alt="Create user" width="200"/>
+
+## License
+
+This project is licensed under the MIT License.

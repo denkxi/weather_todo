@@ -117,17 +117,6 @@ app.get("/tasks", authenticateToken, (req, res) => {
   res.json(sortedTasks);
 });
 
-// Get task with id
-app.get("/tasks/:id", authenticateToken, authorizeRole("admin"), (req, res) => {
-  const { id } = req.params;
-  const taskIndex = tasks.findIndex((task) => task.id === parseInt(id));
-
-  if (taskIndex === -1) {
-    return res.status(404).json({ message: "Task not found" });
-  }
-
-
-})
 
 const generateTaskId = () => {
   const ids = tasks.map((task) => task.id);
