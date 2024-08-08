@@ -9,14 +9,13 @@ import {
   Modal,
   Button,
 } from "react-native";
-import React, { useState, useEffect } from "react";
-import { router } from "expo-router";
+import React, { useState, useEffect, useCallback } from "react";
+import { router, useFocusEffect } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import dayjs from "dayjs";
 
 import { getTasks, deleteTask, checkTask } from "@/services/taskService";
 import TaskCard from "@/components/TaskCard";
-import { Task } from "@/model/Task";
 
 const Tasks = () => {
   const [tasks, setTasks] = useState<any[]>([]);
@@ -25,20 +24,26 @@ const Tasks = () => {
   const [modalVisible, setModalVisible] = useState(false);
   const [selectedTask, setSelectedTask] = useState<any>(null);
 
-  useEffect(() => {
-    const fetchTasks = async () => {
-      try {
-        const tasksData = await getTasks();
-        setTasks(tasksData);
-      } catch (error) {
-        Alert.alert("Error", "Failed to fetch tasks");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchTasks = async () => {
+    try {
+      const tasksData = await getTasks();
+      setTasks(tasksData);
+    } catch (error) {
+      Alert.alert('Error', 'Failed to fetch tasks');
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchTasks();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      fetchTasks();
+    }, [])
+  );
 
   const filteredTasks = hideCompleted
     ? tasks.filter((item) => !item.isComplete)
@@ -95,11 +100,12 @@ const Tasks = () => {
 
   // Delete task
   const removeTask = () => {
-    setModalVisible(false);
     if (selectedTask) {
       deleteTask(selectedTask.id)
         .then(() => {
           setTasks(tasks.filter((task) => task.id !== selectedTask.id));
+          setModalVisible(false);
+          setSelectedTask(null);
         })
         .catch((error) => {
           Alert.alert("Error", "Failed to delete task");

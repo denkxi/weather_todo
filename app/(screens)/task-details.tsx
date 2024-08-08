@@ -5,15 +5,18 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Alert,
 } from "react-native";
 import React, { useState } from "react";
 import { router, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 
+import { deleteTask, updateTask } from "@/services/taskService";
 import { icons } from "@/constants";
 import CustomButton from "@/components/CustomButton";
 import FormField from "@/components/FormField";
 import { useUserContext } from "@/hooks/UserContext";
+import { Task } from "@/model/Task";
 
 const TaskDetails = () => {
   const { user } = useUserContext();
@@ -38,12 +41,36 @@ const TaskDetails = () => {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleSave = () => {
-    console.log("Save task", taskObj.id);
+  const handleSave = async () => {
+    try {
+      setIsSubmitting(true);
+      const updatedTask: Task = {
+        ...form,
+        id: taskObj.id,
+      };
+      await updateTask(taskObj.id, updatedTask);
+      Alert.alert("Success", "Task updated successfully", [
+        { text: "OK", onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "Failed to update task");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
-  const handleDelete = () => {
-    console.log("Delete task", taskObj.id);
+  const handleDelete = async () => {
+    try {
+      setIsSubmitting(true);
+      await deleteTask(taskObj.id);
+      Alert.alert("Success", "Task deleted successfully", [
+        { text: "OK", onPress: () => router.back() },
+      ]);
+    } catch (error) {
+      Alert.alert("Error", "Failed to delete task");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   return (
