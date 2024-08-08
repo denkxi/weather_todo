@@ -40,7 +40,7 @@ const Create = () => {
       const newTask: Task = {
         ...form,
         datetime: new Date().toISOString(),
-        location: "Tallinn",
+        location: "Tallinn, Estonia",
         isComplete: false,
       };
       await createTask(newTask);

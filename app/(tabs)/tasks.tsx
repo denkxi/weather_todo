@@ -176,8 +176,8 @@ const Tasks = () => {
         }}
       >
         <View className="flex-1 justify-center items-center">
-          <View className="bg-white p-4 rounded-lg shadow-lg">
-            <Text className="text-lg font-qsemibold">
+          <View className="border-[1px] border-placeholder bg-primary p-4 rounded-lg shadow-lg">
+            <Text className="text-lg font-qsemibold text-main">
               Are you sure you want to delete this task?
             </Text>
             <View className="flex-row justify-around mt-4">
