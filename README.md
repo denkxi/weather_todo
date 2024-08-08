@@ -112,37 +112,37 @@ Use the following credentials to log in:
 ## Previews
 
 ### Onboarding screen
-<img src="./previews/onboarding.jpg" alt="Onboarding" width="200"/>
+<img src="./previews/onboarding.jpg" alt="Onboarding" width="300"/>
 
 ### Sign in screen
-<img src="./previews/signin.jpg" alt="Sign in" width="200"/>
+<img src="./previews/signin.jpg" alt="Sign in" width="300"/>
 
 ### Task list (admin)
-<img src="./previews/task_list_admin.jpg" alt="Tasks admin" width="200"/>
+<img src="./previews/task_list_admin.jpg" alt="Tasks admin" width="300"/>
 
 ### Task details (admin, celcius)
-<img src="./previews/details_admin_celcius.jpg" alt="Details admin celcius" width="200"/>
+<img src="./previews/details_admin_celcius.jpg" alt="Details admin celcius" width="300"/>
 
 ### Task details (admin, fahrenheit)
-<img src="./previews/details_admin_fahrenheit.jpg" alt="Details admin fahrenheit" width="200"/>
+<img src="./previews/details_admin_fahrenheit.jpg" alt="Details admin fahrenheit" width="300"/>
 
 ### Create task (admin)
-<img src="./previews/create_admin.jpg" alt="Create admin" width="200"/>
+<img src="./previews/create_admin.jpg" alt="Create admin" width="300"/>
 
 ### Profile
-<img src="./previews/profile.jpg" alt="Profile" width="200"/>
+<img src="./previews/profile.jpg" alt="Profile" width="300"/>
 
 ### Task list (user)
-<img src="./previews/task_list_user.jpg" alt="Tasks user" width="200"/>
+<img src="./previews/task_list_user.jpg" alt="Tasks user" width="300"/>
 
 ### Task list (user, hide completed)
-<img src="./previews/task_list_user_hidden.jpg" alt="Tasks user hidden" width="200"/>
+<img src="./previews/task_list_user_hidden.jpg" alt="Tasks user hidden" width="300"/>
 
 ### Task details (user)
-<img src="./previews/details_user.jpg" alt="Details user" width="200"/>
+<img src="./previews/details_user.jpg" alt="Details user" width="300"/>
 
 ### Create task (user)
-<img src="./previews/create_user.jpg" alt="Create user" width="200"/>
+<img src="./previews/create_user.jpg" alt="Create user" width="300"/>
 
 ## License
 
