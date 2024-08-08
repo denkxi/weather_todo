@@ -5,23 +5,44 @@ import {
   FlatList,
   Switch,
   TouchableOpacity,
+  Alert,
+  Modal,
+  Button,
 } from "react-native";
 import React, { useState, useEffect } from "react";
 import { router } from "expo-router";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import dayjs from "dayjs"; 
+import dayjs from "dayjs";
 
-import Task from "@/components/Task";
-import tasks from "../../constants/tasks";
-
+import { getTasks, deleteTask, checkTask } from "@/services/taskService";
+import TaskCard from "@/components/TaskCard";
+import { Task } from "@/model/Task";
 
 const Tasks = () => {
+  const [tasks, setTasks] = useState<any[]>([]);
+  const [loading, setLoading] = useState(true);
   const [hideCompleted, setHideCompleted] = useState(true);
-  const [taskList, setTaskList] = useState([...tasks]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedTask, setSelectedTask] = useState<any>(null);
+
+  useEffect(() => {
+    const fetchTasks = async () => {
+      try {
+        const tasksData = await getTasks();
+        setTasks(tasksData);
+      } catch (error) {
+        Alert.alert("Error", "Failed to fetch tasks");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchTasks();
+  }, []);
 
   const filteredTasks = hideCompleted
-    ? taskList.filter((item) => !item.isComplete)
-    : taskList;
+    ? tasks.filter((item) => !item.isComplete)
+    : tasks;
 
   // Load user preference from local storage
   useEffect(() => {
@@ -53,19 +74,48 @@ const Tasks = () => {
     saveHideCompleted();
   }, [hideCompleted]);
 
-  // Delete task
-  const removeTask = (taskId: number) => {
-    setTaskList((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  // Mark task as completed or vice versa
+  const markTask = async (taskId: number) => {
+    try {
+      const task = tasks.find(task => task.id === taskId);
+      if (task) {
+        const updatedTask = await checkTask(taskId, task);
+        setTasks(prevTasks => prevTasks.map(t => t.id === taskId ? updatedTask : t));
+      }
+    } catch (error) {
+      Alert.alert("Error", "Failed to mark task");
+    }
   };
 
-  // Mark task as completed or vice versa
-  const markTask = (taskId: number) => {
-    setTaskList((prevTasks) =>
-      prevTasks.map((task) =>
-        task.id === taskId ? { ...task, isComplete: !task.isComplete } : task
-      )
-    );
+  // Show message on pressing delete button
+  const pressDelete = (taskId: number) => {
+    setSelectedTask(tasks.find((task) => task.id === taskId));
+    setModalVisible(true);
   };
+
+  // Delete task
+  const removeTask = () => {
+    setModalVisible(false);
+    if (selectedTask) {
+      deleteTask(selectedTask.id)
+        .then(() => {
+          setTasks(tasks.filter((task) => task.id !== selectedTask.id));
+        })
+        .catch((error) => {
+          Alert.alert("Error", "Failed to delete task");
+        });
+    }
+  };
+
+  if (loading) {
+    return (
+      <SafeAreaView>
+        <Text className="text-secondary-100 text-4xl font-qsemibold text-center">
+          Loading...
+        </Text>
+      </SafeAreaView>
+    );
+  }
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -108,10 +158,38 @@ const Tasks = () => {
               })
             }
           >
-            <Task task={item} markTask={markTask} removeTask={removeTask} />
+            <TaskCard task={item} markTask={markTask} pressDelete={pressDelete} />
           </TouchableOpacity>
         )}
       />
+      <Modal
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View className="flex-1 justify-center items-center">
+          <View className="bg-white p-4 rounded-lg shadow-lg">
+            <Text className="text-lg font-qsemibold">
+              Are you sure you want to delete this task?
+            </Text>
+            <View className="flex-row justify-around mt-4">
+              <Button
+                title="Yes"
+                onPress={() => removeTask()}
+              />
+              <Button
+                title="No"
+                onPress={() => {
+                  setModalVisible(false);
+                  setSelectedTask(null);
+                }}
+              />
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

@@ -34,7 +34,7 @@ const SignIn = () => {
       await AsyncStorage.setItem("token", token);
       refreshUser();
       
-      Alert.alert("Success", "Logged in successfully");
+      // Alert.alert("Success", "Logged in successfully");
 
       router.push("/tasks");
     } catch (error) {

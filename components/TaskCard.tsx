@@ -4,19 +4,15 @@ import dayjs from "dayjs";
 
 import { icons } from "@/constants";
 import { useUserContext } from "@/hooks/UserContext";
+import { Task } from "@/model/Task";
 
 interface TaskProps {
-  task: {
-    id: number;
-    name: string;
-    isComplete: boolean;
-    datetime: string;
-  };
+  task: Task;
   markTask: (id: number) => void;
-  removeTask: (id: number) => void;
+  pressDelete: (id: number) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ task, markTask, removeTask }) => {
+const TaskCard: React.FC<TaskProps> = ({ task, markTask, pressDelete }) => {
   const { user } = useUserContext();
 
   if (!user) {
@@ -56,7 +52,7 @@ const Task: React.FC<TaskProps> = ({ task, markTask, removeTask }) => {
         </Text>
       </View>
       {user.role === "admin" && (
-        <TouchableOpacity onPress={() => removeTask(id)}>
+        <TouchableOpacity onPress={() => pressDelete(id)}>
           <Image
             className="w-6 h-6"
             resizeMode="contain"
@@ -69,4 +65,4 @@ const Task: React.FC<TaskProps> = ({ task, markTask, removeTask }) => {
   );
 };
 
-export default Task;
+export default TaskCard;
